@@ -23,16 +23,7 @@ export const metadata = {
   title: "Reuni Akbar",
   description: "UNBAR-ATP-UICM",
   icons: {
-    icon: [
-      {
-        url: '/icon-light.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-    ],
+    icon: "/icon.jpeg", // Mengarah ke public/icon.jpg
   },
 };
 

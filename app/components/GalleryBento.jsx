@@ -17,7 +17,6 @@ const BentoCard = ({ item, index, onClick }) => {
             onClick={() => onClick(item)}
             className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100/50 flex flex-col justify-end p-5 sm:p-6 bg-gray-200 ${item.spanClass}`}
         >
-            {/* SKELETON ANIMATION */}
             {!isLoaded && (
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 animate-pulse z-10" />
             )}

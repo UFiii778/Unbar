@@ -30,7 +30,6 @@ const PARTICIPANTS = [
     { id: 20, name: "Alumni 20", role: "Alumni ATB '18", image: assets.User20 || assets.user_image, status: "Hadir" },
 ];
 
-// Komponen Card Individu dengan Skeleton Loading State
 const ParticipantCard = ({ item }) => {
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -38,7 +37,6 @@ const ParticipantCard = ({ item }) => {
         <div className="w-52 sm:w-64 bg-white border border-gray-200/90 rounded-2xl p-3 shadow-sm flex flex-col items-center shrink-0">
             <div className="w-full aspect-square relative rounded-xl overflow-hidden bg-gray-200">
                 
-                {/* SKELETON ANIMATION */}
                 {!isLoaded && (
                     <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse z-10 flex items-center justify-center">
                         <div className="w-8 h-8 border-2 border-gray-300 border-t-amber-500 rounded-full animate-spin" />

@@ -42,6 +42,14 @@ const Header = () => {
                             rotationInterval={3000}
                         />
                     </motion.span>
+
+                    <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.2, delay: 0.4 }}
+                        className="inline-block min-w-[150px] text-xs lg:text-[22px] text-center">
+                        ! Ini Baru Web Uji Coba | Jika ada Masalah dan Kritik untuk Web ini.. harap Laporkan pada Developer <br /> termasuk lag atau bug
+                        </motion.span>
                 </div>
 
                 <motion.h1
