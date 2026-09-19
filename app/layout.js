@@ -1,0 +1,50 @@
+import { Arimo, Nunito, Poppins } from "next/font/google";
+import "./globals.css";
+
+const outfit = Nunito({
+  subsets: ["sans"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-outfit",
+});
+
+const ovo = Arimo({
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-ovo",
+});
+
+const pop = Poppins({
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-pop",
+});
+
+export const metadata = {
+  title: "Reuni Akbar",
+  description: "UNBAR-ATP-UICM",
+  icons: {
+    icon: [
+      {
+        url: '/icon-light.png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/icon-dark.png',
+        media: '(prefers-color-scheme: dark)',
+      },
+    ],
+  },
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html
+      lang="en" className="scroll-smooth"
+
+    >
+      <body className={`${outfit.variable} ${ovo.variable} ${pop.variable} antialiased`}>
+        {children}
+      </body>
+    </html>
+  );
+}
