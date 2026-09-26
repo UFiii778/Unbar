@@ -8,14 +8,14 @@ import { BsWhatsapp } from "react-icons/bs";
 const WhatsappCard = () => {
     const admins = [
         {
-            name: "Ibu Heavy",
+            name: "Ceu Heavy",
             phone: "+62 812-1496-2181",
             role: "Panitia Pendaftaran",
             waLink:
                 "https://wa.me/6281214962181?text=Halo%20Ceu%20Heavy,%20saya%20ingin%20mendaftar%20kehadiran%20Reuni%20Akbar%20UNBAR/UICM/ATB",
         },
         {
-            name: "Ibu Lia",
+            name: "Ceu Lia",
             phone: "+62 815-7305-3208",
             role: "Panitia Konfirmasi",
             waLink:

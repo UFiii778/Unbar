@@ -12,6 +12,8 @@ import Footer from "./components/Footer";
 import Rsvp from "./components/Rsvp";
 import WhatsappCard from "./components/WhatsappCard";
 import CurveDivider from "./components/CurveDivider";
+import BankTransfer from "./components/BankTransfer";
+import FooterBanner from "./components/FooterBanner";
 
 export default function Home() {
   return (
@@ -27,6 +29,8 @@ export default function Home() {
         <CurveDivider />
         <main className="space-y-20 py-20 bg-[#030014]">
         <WhatsappCard />
+        <BankTransfer />
+        <FooterBanner />
         </main>
         <Footer />
       </div>

@@ -109,23 +109,13 @@ const Gallery = () => {
                 <div className="absolute top-0 bottom-0 left-0 w-16 sm:w-28 bg-gradient-to-r from-white to-transparent z-20 pointer-events-none" />
                 <div className="absolute top-0 bottom-0 right-0 w-16 sm:w-28 bg-gradient-to-l from-white to-transparent z-20 pointer-events-none" />
 
+                {/* ANIMATED AUTO SCROLL SUDAH DIHAPUS */}
                 <motion.div
                     ref={innerTrackRef}
                     className="flex gap-5 w-max select-none"
                     drag="x"
                     dragConstraints={{ right: 0, left: -maxScroll }}
                     dragElastic={0.08}
-                    animate={{
-                        x: [0, -maxScroll],
-                    }}
-                    transition={{
-                        x: {
-                            repeat: 0,
-                            duration: 35,
-                            ease: "easeInOut",
-                        },
-                    }}
-                    whileHover={{ animationPlayState: "paused" }}
                     whileTap={{ cursor: "grabbing" }}
                 >
                     {PARTICIPANTS.map((item) => (

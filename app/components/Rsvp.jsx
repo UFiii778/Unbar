@@ -2,18 +2,22 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, CheckCircle2, User, Users, MessageSquare, Send, ChevronDown, Check } from "lucide-react";
-import Aurora from "./reactbits/Aurora";
+import { Loader2, CheckCircle2, User, Users, MessageSquare, Send, ChevronDown, Check, GraduationCap } from "lucide-react";
+
+// Generate Array Tahun Angkatan dari 2024 turun ke 1997
+const BATCH_YEARS = Array.from({ length: 2024 - 1976 + 1 }, (_, i) => 2024 - i);
 
 const Rsvp = () => {
     const [formData, setFormData] = useState({
         name: "",
+        batchYear: "2024",
         attendance: "Hadir",
         guestCount: 1,
         message: "",
     });
 
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isGuestDropdownOpen, setIsGuestDropdownOpen] = useState(false);
+    const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
     const guestOptions = [1, 2, 3, 4, 5];
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,6 +49,7 @@ const Rsvp = () => {
                 setIsSuccess(true);
                 setFormData({
                     name: "",
+                    batchYear: "2024",
                     attendance: "Hadir",
                     guestCount: 1,
                     message: "",
@@ -57,7 +62,7 @@ const Rsvp = () => {
             } else {
                 setResultMsg(result.message || "Gagal mengirim konfirmasi.");
             }
-        } catch (error) {
+       } catch (error) {
             setResultMsg("Terjadi kesalahan koneksi. Silakan coba lagi.");
         } finally {
             setIsSubmitting(false);
@@ -97,6 +102,12 @@ const Rsvp = () => {
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="w-8 h-8 rounded-lg bg-yellow-50 border border-amber-100 flex items-center justify-center text-yellow-600">
+                                <GraduationCap className="w-4 h-4" />
+                            </div>
+                            <span>Pilih angkatan tahun kelulusan Anda</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-yellow-50 border border-amber-100 flex items-center justify-center text-yellow-600">
                                 <Users className="w-4 h-4" />
                             </div>
                             <span>Pilih jumlah tamu yang akan hadir bersama Anda</span>
@@ -123,6 +134,7 @@ const Rsvp = () => {
                                     exit={{ opacity: 0, y: -20 }}
                                     transition={{ duration: 0.3 }}
                                 >
+                                    {/* Input Nama */}
                                     <div>
                                         <label className="block text-xs font-semibold text-gray-700 mb-1">
                                             Nama Lengkap *
@@ -138,6 +150,65 @@ const Rsvp = () => {
                                         />
                                     </div>
 
+                                    {/* Dropdown Angkatan Tahun */}
+                                    <div className="relative z-30">
+                                        <label className="block text-xs font-semibold text-gray-700 mb-1">
+                                            Angkatan Tahun *
+                                        </label>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsYearDropdownOpen((prev) => !prev)}
+                                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200/80 text-sm bg-white/80 backdrop-blur-md flex items-center justify-between text-gray-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 transition-all shadow-sm"
+                                        >
+                                            <span>Angkatan {formData.batchYear}</span>
+                                            <ChevronDown
+                                                className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isYearDropdownOpen ? "rotate-180 text-yellow-500" : ""}`}
+                                            />
+                                        </button>
+
+                                        <AnimatePresence>
+                                            {isYearDropdownOpen && (
+                                                <>
+                                                    <div
+                                                        className="fixed inset-0 z-10"
+                                                        onClick={() => setIsYearDropdownOpen(false)}
+                                                    />
+
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                                                        animate={{ opacity: 1, y: 4, scale: 1 }}
+                                                        exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                                                        transition={{ duration: 0.15 }}
+                                                        className="absolute left-0 right-0 z-20 max-h-48 overflow-y-auto rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-xl p-1.5 space-y-1"
+                                                    >
+                                                        {BATCH_YEARS.map((year) => (
+                                                            <button
+                                                                key={year}
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setFormData((prev) => ({ ...prev, batchYear: String(year) }));
+                                                                    setIsYearDropdownOpen(false);
+                                                                }}
+                                                                className={`w-full text-left px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center justify-between ${
+                                                                    String(formData.batchYear) === String(year)
+                                                                        ? "bg-yellow-500 text-white shadow-md shadow-sky-500/20"
+                                                                        : "text-gray-700 hover:bg-sky-50/80 hover:text-yellow-600"
+                                                                }`}
+                                                            >
+                                                                <span>Angkatan {year}</span>
+                                                                {String(formData.batchYear) === String(year) && (
+                                                                    <Check className="w-4 h-4 text-white" />
+                                                                )}
+                                                            </button>
+                                                        ))}
+                                                    </motion.div>
+                                                </>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
+
+                                    {/* Status Kehadiran */}
                                     <div>
                                         <label className="block text-xs font-semibold text-gray-700 mb-1">
                                             Status Kehadiran *
@@ -150,10 +221,11 @@ const Rsvp = () => {
                                                     onClick={() =>
                                                         setFormData((prev) => ({ ...prev, attendance: option }))
                                                     }
-                                                    className={`py-2.5 px-4 rounded-xl border text-xs font-semibold transition-all ${formData.attendance === option
-                                                        ? "bg-yellow-500 text-white border-yellow-500 shadow-md shadow-sky-500/20"
-                                                        : "bg-white/80 border-gray-200 text-gray-600 hover:bg-gray-50"
-                                                        }`}
+                                                    className={`py-2.5 px-4 rounded-xl border text-xs font-semibold transition-all ${
+                                                        formData.attendance === option
+                                                            ? "bg-yellow-500 text-white border-yellow-500 shadow-md shadow-sky-500/20"
+                                                            : "bg-white/80 border-gray-200 text-gray-600 hover:bg-gray-50"
+                                                    }`}
                                                 >
                                                     {option}
                                                 </button>
@@ -161,6 +233,7 @@ const Rsvp = () => {
                                         </div>
                                     </div>
 
+                                    {/* Jumlah Tamu */}
                                     {formData.attendance === "Hadir" && (
                                         <motion.div
                                             initial={{ opacity: 0, height: 0 }}
@@ -174,22 +247,23 @@ const Rsvp = () => {
 
                                             <button
                                                 type="button"
-                                                onClick={() => setIsDropdownOpen((prev) => !prev)}
+                                                onClick={() => setIsGuestDropdownOpen((prev) => !prev)}
                                                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200/80 text-sm bg-white/80 backdrop-blur-md flex items-center justify-between text-gray-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 transition-all shadow-sm"
                                             >
                                                 <span>{formData.guestCount} Orang</span>
                                                 <ChevronDown
-                                                    className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? "rotate-180 text-yellow-500" : ""
-                                                        }`}
+                                                    className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
+                                                        isGuestDropdownOpen ? "rotate-180 text-yellow-500" : ""
+                                                    }`}
                                                 />
                                             </button>
 
                                             <AnimatePresence>
-                                                {isDropdownOpen && (
+                                                {isGuestDropdownOpen && (
                                                     <>
                                                         <div
                                                             className="fixed inset-0 z-10"
-                                                            onClick={() => setIsDropdownOpen(false)}
+                                                            onClick={() => setIsGuestDropdownOpen(false)}
                                                         />
 
                                                         <motion.div
@@ -197,7 +271,7 @@ const Rsvp = () => {
                                                             animate={{ opacity: 1, y: 4, scale: 1 }}
                                                             exit={{ opacity: 0, y: -8, scale: 0.98 }}
                                                             transition={{ duration: 0.15 }}
-                                                            className="absolute left-0 right-0 z-20 overflow-hidden rounded-2xl bg-white/70 backdrop-blur-xl border border-white/60 shadow-xl p-1.5 space-y-1"
+                                                            className="absolute left-0 right-0 z-20 overflow-hidden rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-xl p-1.5 space-y-1"
                                                         >
                                                             {guestOptions.map((num) => (
                                                                 <button
@@ -205,12 +279,13 @@ const Rsvp = () => {
                                                                     type="button"
                                                                     onClick={() => {
                                                                         setFormData((prev) => ({ ...prev, guestCount: num }));
-                                                                        setIsDropdownOpen(false);
+                                                                        setIsGuestDropdownOpen(false);
                                                                     }}
-                                                                    className={`w-full text-left px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center justify-between ${formData.guestCount === num
-                                                                        ? "bg-yellow-500 text-white shadow-md shadow-sky-500/20"
-                                                                        : "text-gray-700 hover:bg-sky-50/80 hover:text-yellow-600"
-                                                                        }`}
+                                                                    className={`w-full text-left px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center justify-between ${
+                                                                        formData.guestCount === num
+                                                                            ? "bg-yellow-500 text-white shadow-md shadow-sky-500/20"
+                                                                            : "text-gray-700 hover:bg-sky-50/80 hover:text-yellow-600"
+                                                                    }`}
                                                                 >
                                                                     <span>{num} Orang</span>
                                                                     {formData.guestCount === num && (
@@ -225,6 +300,7 @@ const Rsvp = () => {
                                         </motion.div>
                                     )}
 
+                                    {/* Pesan & Ucapan */}
                                     <div>
                                         <label className="block text-xs font-semibold text-gray-700 mb-1">
                                             Pesan & Ucapan

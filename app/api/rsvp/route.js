@@ -3,9 +3,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
-    const { name, attendance, guestCount, message } = await request.json();
+    const { name, batchYear, attendance, guestCount, message } = await request.json();
 
-    // 1. Cek Ketersediaan Environment Variables
     const sheetId = process.env.GOOGLE_SHEET_ID;
     const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
     const privateKey = process.env.GOOGLE_PRIVATE_KEY;
@@ -18,7 +17,6 @@ export async function POST(request) {
       );
     }
 
-    // 2. Validasi Input
     if (!name || !attendance) {
       return NextResponse.json(
         { message: "Nama dan status kehadiran wajib diisi!" },
@@ -26,7 +24,6 @@ export async function POST(request) {
       );
     }
 
-    // 3. Autentikasi Google Sheets API
     const auth = new google.auth.GoogleAuth({
       credentials: {
         client_email: clientEmail,
@@ -37,18 +34,17 @@ export async function POST(request) {
 
     const sheets = google.sheets({ version: "v4", auth });
 
-    // 4. Format Tanggal
     const formattedDate = new Date().toLocaleString("id-ID", {
       timeZone: "Asia/Jakarta",
     });
 
-    // 5. Append Data ke Google Sheet
+    // Urutan Kolom: [Waktu, Nama, Angkatan, Status, Jumlah Tamu, Pesan]
     await sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
-      range: "Sheet1!A:E", // Pastikan nama tab di Google Sheet kamu adalah 'Sheet1' (sesuaikan jika 'Sheet 1' atau 'Halaman 1')
+      range: "Sheet1!A:F",
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [[formattedDate, name, attendance, guestCount || 1, message || "-"]],
+        values: [[formattedDate, name, batchYear || "-", attendance, guestCount || 1, message || "-"]],
       },
     });
 

@@ -23,7 +23,7 @@ export const metadata = {
   title: "Reuni Akbar",
   description: "UNBAR-ATP-UICM",
   icons: {
-    icon: "/icon.jpeg", // Mengarah ke public/icon.jpg
+    icon: "/icon.jpeg",
   },
 };
 
